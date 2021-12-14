@@ -30,7 +30,7 @@ Final pages should look like this
 ### Acceptance Criteria
 
 - [x] Films route shows the list of films
-- [ ]Characters route shows the list of characters
+- [x]Characters route shows the list of characters
 
 ### Rubric
 
