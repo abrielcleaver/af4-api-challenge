@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, NavLink } from 'react-router-dom';
+import { BrowserRouter, NavLink, Switch, Route } from 'react-router-dom';
 
 import CharacterList from './components/Characters/CharacterList';
 import FilmList from './components/Films/FilmList';
@@ -17,6 +17,15 @@ function App() {
   const getFilms = async () => {
     // Add your code here!
     // 1. Get data using fetch from https://the-one-api.dev/v2/movie/ (don't forget to set your header!)
+    const resp = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/rest/v1/films`, {
+      headers: {
+        apikey: process.env.REACT_APP_SUPABASE_KEY,
+        Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_KEY}`,
+      },
+    });
+    const data = await resp.json();
+    // console.log(data);
+
     // 2. Transform the response so that films contains nested arrays of:
     //   - the film's title
     //   - the film's title "slugified" i.e. in all lower case, with words separated with dashes,
@@ -24,10 +33,17 @@ function App() {
     //   - academy award nominations
     // NOTE: make sure you look at the response from the server - it may not be consistent
     // [["The Lord of the Rings Series", "the-lord-of-the-rings-series", 2917, 30 ], ["The Hobbit Series", "the-hobit-series", 2932, 7]...]
-
+    const filmData = data.map((item) => {
+      return [
+        item.title,
+        item.title.replace(/\s+/g, '-').toLowerCase(),
+        item.box_office_total,
+        item.academy_award_nominations,
+      ];
+    });
     // 3. Set the resulting transformation as state using setFilms
+    setFilms(filmData);
     // 4. You'll know it works if the films show up on the page
-    return [];
   };
 
   const getCharacters = async () => {
@@ -58,6 +74,11 @@ function App() {
           </NavLink>
         </header>
         {/* ADD YOUR ROUTES HERE */}
+        <Switch>
+          <Route path="/films">
+            <FilmList films={films} />
+          </Route>
+        </Switch>
       </BrowserRouter>
     </div>
   );
