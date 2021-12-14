@@ -49,6 +49,12 @@ function App() {
   const getCharacters = async () => {
     // Add your code here!
     // 1. Get data using fetch from https://the-one-api.dev/v2/character/
+    const resp = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/rest/v1/characters`, {
+      headers: {
+        apikey: process.env.REACT_APP_SUPABASE_KEY,
+        Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_KEY}`,
+      },
+    });
     // 2. Update the response data with the key `dates` which is a combination of
     //    the `birth` key and the `death key` separated with a dash. If neither date
     //    is provided, it should hold the string 'Unknown'
@@ -57,9 +63,13 @@ function App() {
     //       {name: 'Adrahil I', birth: "Before , TA 1944", death: "Late , Third Age", dates: "Before , TA 1944 - Late , Third Age", ...},
     //       {name: 'Adrahil II', birth: "TA 2917", death: "TA 3010, dates: "TA 2917 - TA 3010", ...},
     //    ]
+    const data = await resp.json();
+    const characterData = data.map((item) => {
+      return { name: item.name, dates: `${item.birth} = ${item.death}` };
+    });
     // 3. Set the resulting transformation as state using setCharacters
+    setCharacters(characterData);
     // 4. You'll know it works if the characters show up on the page
-    return [];
   };
 
   return (
@@ -77,6 +87,9 @@ function App() {
         <Switch>
           <Route path="/films">
             <FilmList films={films} />
+          </Route>
+          <Route path="/characters">
+            <CharacterList characters={characters} />
           </Route>
         </Switch>
       </BrowserRouter>
