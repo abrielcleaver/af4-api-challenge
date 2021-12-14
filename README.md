@@ -1,4 +1,6 @@
 # The One API Challenge
+* Due December 13th
+* [Netlify link](abriels-lotr-api-challenge.netlify.app)
 
 Use [this repo](https://github.com/alchemycodelab/react-lotr-munging) as your template.
 
@@ -27,8 +29,8 @@ Final pages should look like this
 
 ### Acceptance Criteria
 
-- Films route shows the list of films
-- Characters route shows the list of characters
+- [x] Films route shows the list of films
+- [ ]Characters route shows the list of characters
 
 ### Rubric
 
